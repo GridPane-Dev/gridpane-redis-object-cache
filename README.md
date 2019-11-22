@@ -9,14 +9,12 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 A persistent object cache backend powered by Redis. Supports Predis, PhpRedis, HHVM, replication, clustering and WP-CLI.
 
-Forked from Till Kruss work, so send any donations his way:  
-https://www.paypal.me/tillkruss  
-
 
 ### Description
 
-A persistent object cache backend powered by Redis. 
-Supports:
+A persistent object cache backend powered by Redis.   
+
+Supports:  
 [Predis](https://github.com/nrk/predis/)  
 [PhpRedis (PECL)](https://github.com/phpredis/phpredis)  
 [HHVM](https://github.com/facebook/hhvm/tree/master/hphp/system/php/redis)  
@@ -25,8 +23,10 @@ clustering
 [WP-CLI](http://wp-cli.org/)
 
 To adjust the connection parameters, prefix cache keys or configure replication/clustering.
+Forked from Till Kruss work, so send any donations his way:  
+https://www.paypal.me/tillkruss  
 
-Forked from Eric Mann's and Erick Hitter's [Redis Object Cache](https://github.com/ericmann/Redis-Object-Cache).
+(He forked from Eric Mann's and Erick Hitter's [Redis Object Cache](https://github.com/ericmann/Redis-Object-Cache).)
 
 
 ### Installation
@@ -183,11 +183,8 @@ The following commands are supported:
 
 = 1.0 =
 
-  * Require PHP 5.4 or newer
-  * Use pretty print in diagnostics
-  * Throw exception if Redis library is missing
-  * Fixed cache not flushing for some users
-  * Fixed admin issues when `WP_REDIS_DISABLED` is `false`
+  * Added optional flush button in admin bar
+  * Added option to display cached objects in footer
   
 FORKED
 
