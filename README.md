@@ -3,7 +3,7 @@ Tags: redis, predis, phpredis, hhvm, pecl, caching, cache, object cache, perform
 Requires at least: 3.3  
 Tested up to: 5.2  
 Requires PHP: 7.3  
-Stable tag: 1.0
+Stable tag: 1.0  
 License: GPLv3  
 License URI: http://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -22,10 +22,10 @@ replication
 clustering  
 [WP-CLI](http://wp-cli.org/)
 
-To adjust the connection parameters, prefix cache keys or configure replication/clustering.
-Forked from Till Kruss work, so send any donations his way:  
-https://www.paypal.me/tillkruss  
+To adjust the connection parameters, prefix cache keys or configure replication/clustering.  
 
+Forked from Till Kruss work, so send any donations his way:   
+https://www.paypal.me/tillkruss  
 (He forked from Eric Mann's and Erick Hitter's [Redis Object Cache](https://github.com/ericmann/Redis-Object-Cache).)
 
 
