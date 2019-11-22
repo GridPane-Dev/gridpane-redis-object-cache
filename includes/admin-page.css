@@ -1,0 +1,80 @@
+.settings_page_gridpane-redis-object-cache .info-form-table th,
+.settings_page_gridpane-redis-object-cache .info-table td {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.settings_page_gridpane-redis-object-cache .info-form-table th {
+    text-align: right;
+}
+
+.settings_page_gridpane-redis-object-cache .info-form-table code {
+    background: none;
+}
+
+.wrap .button.flush,
+.wrap .button.enable {
+    background: #089463;
+    border-color: #084731;
+    color: white;
+}
+
+.wrap .button.flush:hover,
+.wrap .button.flush:focus,
+.wrap .button.flush:active
+.wrap .button.enable:hover,
+.wrap .button.enable:focus,
+.wrap .button.enable:active {
+    background: #164731;
+    border-color: #164731;
+    color: white;
+}
+
+.wrap .button.disable {
+    background: #d54e21;
+    border-color: #a83d1a;
+    color: white;
+}
+
+.wrap .button.disable:hover,
+.wrap .button.disable:focus {
+    background: #a83d1a;
+    border-color: #923517;
+    color: white;
+}
+
+.wrap .button.disable:active {
+    background: #c7491f;
+    border-color: #923517;
+    color: white;
+}
+
+.settings_page_gridpane-redis-object-cache .card,
+.settings_page_gridpane-redis-object-cache br.clearfix {
+    display: none;
+}
+
+.form-table tr.plugin_options th {
+    width: 300px;
+    font-weight: 300;
+}
+
+.tools {
+    margin-top: 50px;
+}
+
+@media screen and (min-width: 1110px) {
+    .settings_page_gridpane-redis-object-cache .card {
+        display: block;
+        float: right;
+    }
+
+    .settings_page_gridpane-redis-object-cache .section-overview {
+        float: left;
+    }
+
+    .settings_page_gridpane-redis-object-cache br.clearfix {
+        display: block;
+        clear: both;
+    }
+}
