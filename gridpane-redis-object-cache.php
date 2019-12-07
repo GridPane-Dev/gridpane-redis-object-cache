@@ -371,6 +371,8 @@ class RedisObjectCache {
 						case 'disable-cache':
 							$result = $wp_filesystem->delete( WP_CONTENT_DIR . '/object-cache.php' );
 							do_action( 'redis_object_cache_disable', $result );
+							update_option( 'gridpane_add_flush_button', 0 );
+							update_option( 'gridpane_show_redis_output', 0 );
 							$message = $result ? 'cache-disabled' : 'disable-cache-failed';
 							break;
 
