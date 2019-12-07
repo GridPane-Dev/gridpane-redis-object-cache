@@ -78,3 +78,38 @@
         clear: both;
     }
 }
+
+.wrap .button.delete:active {
+    background: #a83d1a;
+    border-color: #923517;
+    color: white;
+    box-shadow: inset 0 2px 5px -3px rgba( 0, 0, 0, 0.5 ),
+    0 0 0 1px #d54e21,
+    0 0 2px 1px rgba( 30, 140, 190, .8 );
+}
+
+.settings_page_redis-cache .card,
+.settings_page_redis-cache br.clearfix {
+    display: none;
+}
+
+.settings_page_redis-cache .card ul {
+    list-style: circle;
+    padding-left: 25px;
+}
+
+@media screen and (min-width: 1110px) {
+    .settings_page_redis-cache .card {
+        display: block;
+        float: right;
+    }
+
+    .settings_page_redis-cache .section-overview {
+        float: left;
+    }
+
+    .settings_page_redis-cache br.clearfix {
+        display: block;
+        clear: both;
+    }
+}

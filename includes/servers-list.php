@@ -2,129 +2,122 @@
 
 class Servers_List extends WP_List_Table {
 
-    public function __construct() {
+	public function __construct() {
+		parent::__construct(array(
+			'singular' => __('Server', 'gridpane-redis-object-cache'),
+			'plural' => __('Servers', 'gridpane-redis-object-cache'),
+			'ajax' => false
+		));
+	}
 
-        parent::__construct( array(
-            'singular' => __( 'Server', 'gridpane-redis-object-cache' ),
-            'plural' => __( 'Servers', 'gridpane-redis-object-cache' ),
-            'ajax' => false
-        ) );
+	public function get_columns() {
 
-    }
+		return array(
+			'alias' => 'Alias',
+			'scheme' => 'Protocol',
+			'host' => 'Host',
+			'port' => 'Port',
+			'path' => 'Path',
+			'database' => 'Database',
+			'password' => 'Password',
+		);
 
-    public function get_columns() {
+	}
 
-        return array(
-            'alias' => 'Alias',
-            'scheme' => 'Protocol',
-            'host' => 'Host',
-            'port' => 'Port',
-            'path' => 'Path',
-            'database' => 'Database',
-            'password' => 'Password',
-        );
+	public function get_hidden_columns() {
+		$hidden = array('host', 'port', 'path');
 
-    }
+		array_walk_recursive($this->items, function ($value, $key) use (&$hidden) {
+			if ($key == 'scheme') {
+				if (strcasecmp('unix', $value) === 0) {
+					$hidden = array_diff($hidden, array('path'));
+				} else {
+					$hidden = array_diff($hidden, array('host', 'port'));
+				}
+			}
+		});
 
-    public function get_hidden_columns() {
+		return $hidden;
+	}
 
-        $hidden = array( 'host', 'port', 'path' );
+	public function prepare_items() {
+		if (! class_exists('Predis\Client')) {
+			require_once dirname(__FILE__) . '/predis/autoload.php';
+		}
 
-        array_walk_recursive( $this->items, function ( $value, $key ) use ( &$hidden ) {
-            if ( $key == 'scheme' ) {
-                if ( strcasecmp( 'unix', $value ) === 0 ) {
-                    $hidden = array_diff( $hidden, array( 'path' ) );
-                } else {
-                    $hidden = array_diff( $hidden, array( 'host', 'port' ) );
-                }
-            }
-        } );
+		$this->items = $this->get_servers();
 
-        return $hidden;
+		$this->_column_headers = array(
+			$this->get_columns(),
+			$this->get_hidden_columns(),
+			array()
+		);
+	}
 
-    }
+	public function column_default($item, $column_name) {
+		switch ($column_name) {
+			case 'scheme':
+				return isset($item['scheme']) ? strtoupper($item['scheme']) : 'TCP';
+			case 'host':
+				return isset($item['host']) ? $item['host'] : '127.0.0.1';
+			case 'port':
+				return isset($item['port']) ? $item['port'] : '6379';
+			case 'database':
+				return isset($item['database']) ? $item['database'] : '0';
+			case 'password':
+				return isset($item['password']) ? __('Yes', 'gridpane-redis-object-cache') : __('No', 'gridpane-redis-object-cache');
+			default:
+				return isset($item[$column_name]) ? $item[$column_name] : '';
+		}
+	}
 
-    public function prepare_items() {
+	protected function display_tablenav($which) {
+		// hide table navigation
+	}
 
-        if ( ! class_exists( 'Predis\Client' ) ) {
-            require_once dirname(__FILE__) . '/predis/autoload.php';
-        }
+	protected function get_servers() {
+		$server = array(
+			'alias' => 'Master',
+			'scheme' => 'tcp',
+		);
 
-        $this->items = $this->get_servers();
+		foreach (array('scheme', 'host', 'port', 'path', 'password', 'database', 'timeout', 'read_timeout', 'retry_interval') as $setting) {
+			$constant = sprintf('WP_REDIS_%s', strtoupper($setting));
 
-        $this->_column_headers = array(
-            $this->get_columns(),
-            $this->get_hidden_columns(),
-            array()
-        );
+			if (defined($constant)) {
+				$server[$setting] = constant($constant);
+			}
+		}
 
-    }
+		if (defined('WP_REDIS_SHARDS')) {
+			$servers = WP_REDIS_SHARDS;
+		}
 
-    public function column_default( $item, $column_name ) {
+		if (defined('WP_REDIS_CLUSTER')) {
+			$servers = WP_REDIS_CLUSTER;
+		}
 
-        switch ( $column_name ) {
+		if (defined('WP_REDIS_SERVERS')) {
+			$servers = WP_REDIS_SERVERS;
+		}
 
-            case 'scheme':
-                return isset( $item[ 'scheme' ] ) ? strtoupper( $item[ 'scheme' ] ) : 'TCP';
+		if (! isset($servers)) {
+			$servers = array($server);
+		}
 
-            case 'host':
-                return isset( $item[ 'host' ] ) ? $item[ 'host' ] : '127.0.0.1';
+		$servers = array_map(function ($server) {
 
-            case 'port':
-                return isset( $item[ 'port' ] ) ? $item[ 'port' ] : '6379';
+			return is_string($server)
+				? Predis\Connection\Parameters::parse($server)
+				: $server;
+		}, $servers);
 
-            case 'database':
-                return isset( $item[ 'database' ] ) ? $item[ 'database' ] : '0';
+		return array_map(function ($server) {
+			if (defined('WP_REDIS_PASSWORD') && ! empty(WP_REDIS_PASSWORD)) {
+				$server['password'] = '********';
+			}
 
-            case 'password':
-                return isset( $item[ 'password' ] ) ? __( 'Yes', 'gridpane-redis-object-cache' ) : __( 'No', 'gridpane-redis-object-cache' );
-
-            default:
-                return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
-        }
-
-    }
-
-    protected function display_tablenav($which)
-    {
-        // hide table navigation
-    }
-
-    protected function get_servers() {
-
-        $server = array(
-            'alias' => 'Master',
-            'scheme' => 'tcp',
-        );
-
-        foreach ( array( 'scheme', 'host', 'port', 'path', 'password', 'database' ) as $setting ) {
-            $constant = sprintf( 'WP_REDIS_%s', strtoupper( $setting ) );
-
-            if ( defined( $constant ) ) {
-                $server[ $setting ] = constant( $constant );
-            }
-        }
-
-        if ( defined( 'WP_REDIS_SHARDS' ) ) {
-            $servers = WP_REDIS_SHARDS;
-        }
-
-        if ( defined( 'WP_REDIS_CLUSTER' ) ) {
-            $servers = WP_REDIS_CLUSTER;
-        }
-
-        if ( defined( 'WP_REDIS_SERVERS' ) ) {
-            $servers = WP_REDIS_SERVERS;
-        }
-
-        if ( ! isset( $servers ) ) {
-            $servers = array( $server );
-        }
-
-        return array_map( function ( $parameters ) {
-            return is_string( $parameters ) ? Predis\Connection\Parameters::parse( $parameters ) : $parameters;
-        }, $servers );
-
-    }
-
+			return $server;
+		}, $servers);
+	}
 }
