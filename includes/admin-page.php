@@ -83,4 +83,10 @@
 
 	<?php endif; ?>
 
+    <br>
+
+    <p>We have forked the plugin from the <a href="https://wordpress.org/plugins/redis-cache/" target="_blank">original</a> to ensure update stability, the origin plugin is maintained by Till Krüss and you can <a href="https://www.paypal.me/tillkruss" target="_blank">donate to him here.</a></p>
+
 </div>
+
+

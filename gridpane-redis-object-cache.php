@@ -3,10 +3,10 @@
 Plugin Name: GridPane Redis Object Cache
 Plugin URI: https://gitlab.gridpane.com/gp-public/gridpane-redis-object-cache
 Description: A persistent object cache backend powered by Redis. Supports Predis, PhpRedis, HHVM, replication, clustering and WP-CLI.
-Version: 1.1
+Version: 1.5.5
 Text Domain: gridpane-redis--object-cache
 Domain Path: /languages
-Author: Jeff cleverley - forked from Till Krüss
+Author: Till Krüss | Forked by GridPane
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
